@@ -15,7 +15,7 @@ mensagem = input("Mensagem: ")
 novamsg = ""
 
 for crp in mensagem:
-    novamsg += (ord(crp))
+    novamsg += str(ord(crp))
 
 
 #conversão de letra para número[A]
@@ -63,6 +63,7 @@ blocosCriptografados = []
 for bloco in blocosASeremCriptografados:
     blocosCriptografados.append((int(bloco)**y) % n)
 
+print(blocosCriptografados)
 #Blocagem[B]
 
 #Descriptografar[B]
