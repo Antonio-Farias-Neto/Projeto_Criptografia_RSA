@@ -11,6 +11,13 @@ def eh_primo(num):
 
 #Opção[A - Criptografar mensagem/ B - Descriptografar mensagem]
 
+mensagem = input("Mensagem: ")
+novamsg = ""
+
+for crp in mensagem:
+    novamsg += (ord(crp))
+
+
 #conversão de letra para número[A]
 
 #Blocagem[A]
@@ -26,10 +33,12 @@ while True:
     q = random.randint(1000, 1000000)
     if eh_primo(q) and q != p:
         break
-    
+        
 n = p*q
 y = 3
 chavePublica = (n,y)
+
+#Criptografar[A]
 
 #Criptografar[A]
 
@@ -40,4 +49,5 @@ chavePublica = (n,y)
 #Desblocar[B]
 
 #Conversão de número para Letra[B]
+
 
