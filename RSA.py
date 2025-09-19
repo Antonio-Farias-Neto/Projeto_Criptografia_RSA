@@ -11,13 +11,6 @@ def eh_primo(num):
 
 #Opção[A - Criptografar mensagem/ B - Descriptografar mensagem]
 
-mensagem = input("Mensagem: ")
-novamsg = ""
-
-for crp in mensagem:
-    novamsg += str(ord(crp))
-
-
 #conversão de letra para número[A]
 mensagem = input("Mensagem: ")
 novamsg = ""
