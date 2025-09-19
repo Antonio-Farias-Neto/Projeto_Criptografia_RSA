@@ -33,11 +33,12 @@ while True:
     q = random.randint(1000, 1000000)
     if eh_primo(q) and q != p:
         break
-
+        
 n = p*q
 y = 3
 chavePublica = (n,y)
 
+#Criptografar[A]
 
 #Criptografar[A]
 
