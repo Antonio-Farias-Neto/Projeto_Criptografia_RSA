@@ -1,9 +1,11 @@
 import random
 import math
 
+#Função que verifica se dois números são coprimos
 def eh_coprimo(a, b):
     return math.gcd(a, b) == 1
 
+# Função para verificar se um número é primo
 def eh_primo(num):
     if num % 2 == 0:
         return False
@@ -23,14 +25,17 @@ for crp in mensagem:
 
 # Geração de chaves RSA [A]
 
-# Geração do número primo P
+"""
+Geração do "p" e "q" que devem ser números primos
+é gerado um número aleatório, caso ele seja primo,
+ficará guardado nas variáveis
+"""
 p = 0
 while True:
     p = random.randint(100, 1000)
     if eh_primo(p):
         break
 
-# Geração do número primo Q
 q = 0
 while True:
     q = random.randint(100, 1000)
@@ -66,6 +71,11 @@ print("y: " + str(y))
 
 
 # Blocagem [A]
+"""
+percorre a string da mensagem no seu formato convertido pelo Unicode (novamsg),
+e gera blocos cujo seus valores inteiros sejam menores que o "n", e adicionam,
+esses blocos em uma lista para serem criptografados
+"""
 blocosASeremCriptografados = []
 i = 0
 while i < len(novamsg):
@@ -83,6 +93,10 @@ print("mensagem em Unicode: " + novamsg)
 print("em blocos: " + str(blocosASeremCriptografados))
 
 # Criptografar [A]
+"""pega cada bloco da lista de blocos a serem criptografados
+e cripografa eles (com base na formula de criptografia usando mod, 
+os colocando na lista de blocos criptografados
+"""
 blocosCriptografados = []
 for bloco in blocosASeremCriptografados:
     blocosCriptografados.append((int(bloco)**y) % n)
@@ -110,7 +124,6 @@ for bloco in blocosCriptografados:
     blocosDescriptografados.append((int(bloco)**d) % n)
 
 print("blocos descriptografados: " + str(blocosDescriptografados))
-
 
 # Reorganiza os blocos já descriptografados em uma única mensagem[B]
 msgDescriptografada = ""
