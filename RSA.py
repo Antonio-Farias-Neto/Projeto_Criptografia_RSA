@@ -12,26 +12,16 @@ def eh_primo(num):
             return False
     return True
 
-# ================================================================================================
-# CRIPTOGRAFIA RSA
-# ================================================================================================
+#Opção[A - Criptografar mensagem/ B - Descriptografar mensagem]
 
-# ================================================================================================
-# PARTE A - CRIPTOGRAFAR MENSAGEM
-# ================================================================================================
-
-# ---------------------------------------------------------------
-# Conversão de letra para número [A]
-# ---------------------------------------------------------------
+#conversão de letra para número[A]
 mensagem = input("Mensagem: ")
 novamsg = ""
 
 for crp in mensagem:
     novamsg += str(ord(crp))
 
-# ---------------------------------------------------------------
 # Geração de chaves RSA [A]
-# ---------------------------------------------------------------
 
 # Geração do número primo P
 p = 0
@@ -51,24 +41,31 @@ while True:
 n = p * q
 
 # Gerando expoente público Y
+"""
+Gera um y que seja coprimo de m. Para deixar o código mais otimizado, tentei
+pegar o menor y possível entre 3 e 9. Se não achar, vai para o próximo impar
+até achar.
+"""
 m = (p-1) * (q-1)
 for candidato in range(3, 10):
     if eh_coprimo(candidato, m):
         y = candidato
         break
     else:
-        for candidato in range(3, m, 2):  # Testa todos os ímpares a partir de 3
+        for candidato in range(9, m, 2):  
             if eh_coprimo(candidato, m):
                 y = candidato
                 break
 
-print("m: " + str(m), "\ny:" + str(y))
+print("p: " + str(p))
+print("q: " + str(q))
 print("n:" + str(n))
+print("m: " + str(m))
+print("y: " + str(y))
 #chavePublica = (n,y)
 
-# ---------------------------------------------------------------
+
 # Blocagem [A]
-# ---------------------------------------------------------------
 blocosASeremCriptografados = []
 i = 0
 while i < len(novamsg):
@@ -82,48 +79,50 @@ while i < len(novamsg):
         blocosASeremCriptografados.append(novamsg[i])
         i += 1
 
-print("mensagem: " + novamsg)
+print("mensagem em Unicode: " + novamsg)
 print("em blocos: " + str(blocosASeremCriptografados))
 
-# ---------------------------------------------------------------
 # Criptografar [A]
-# ---------------------------------------------------------------
 blocosCriptografados = []
 for bloco in blocosASeremCriptografados:
     blocosCriptografados.append((int(bloco)**y) % n)
 
 print("blocos criptografados: " + str(blocosCriptografados))
 
-# ================================================================================================
-# PARTE B - DESCRIPTOGRAFAR MENSAGEM
-# ================================================================================================
 
-# ---------------------------------------------------------------
+# PARTE B - DESCRIPTOGRAFAR MENSAGEM
+
 # Geração da chave privada [B]
-# ---------------------------------------------------------------
+"""
+A função pow(y, -1, m) calcula o inverso modular de y módulo
+m, ou seja, encontra d tal que (y*d) % m == 1
+"""
 d = pow(y, -1, m)  #chavePrivada = (n,d)
 print("d: " + str(d))
 
-# ---------------------------------------------------------------
+
 # Descriptografar [B]
-# ---------------------------------------------------------------
+"""
+Aplica-se a formula pra descriptografar os blocos
+"""
 blocosDescriptografados = []
 for bloco in blocosCriptografados:
     blocosDescriptografados.append((int(bloco)**d) % n)
 
 print("blocos descriptografados: " + str(blocosDescriptografados))
 
-# ---------------------------------------------------------------
-# Conversão de número para letra [B]
-# ---------------------------------------------------------------
+
+# Reorganiza os blocos já descriptografados em uma única mensagem[B]
 msgDescriptografada = ""
 for bloco in blocosDescriptografados:
     msgDescriptografada += str(bloco)
     #msgDescriptografada = chr(msgDescriptografada)
-
 print("mensagem descriptografada: " + msgDescriptografada)
 
 # Conversão final para caracteres
+"""
+Em blocos de 2 caracteres, converte cada bloco para o caractere correspondente
+"""
 msgfinal = ""
 for num in range(0, len(msgDescriptografada), 2):
     num = msgDescriptografada[num:num+2]
