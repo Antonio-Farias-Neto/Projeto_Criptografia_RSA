@@ -12,35 +12,46 @@ def eh_primo(num):
             return False
     return True
 
+# ================================================================================================
+# CRIPTOGRAFIA RSA
+# ================================================================================================
 
-#Opção[A - Criptografar mensagem/ B - Descriptografar mensagem]
+# ================================================================================================
+# PARTE A - CRIPTOGRAFAR MENSAGEM
+# ================================================================================================
 
-#conversão de letra para número[A]
+# ---------------------------------------------------------------
+# Conversão de letra para número [A]
+# ---------------------------------------------------------------
 mensagem = input("Mensagem: ")
 novamsg = ""
 
 for crp in mensagem:
     novamsg += str(ord(crp))
 
+# ---------------------------------------------------------------
+# Geração de chaves RSA [A]
+# ---------------------------------------------------------------
 
-#Blocagem[A]
-
+# Geração do número primo P
 p = 0
-q = 0
 while True:
     p = random.randint(100, 1000)
     if eh_primo(p):
         break
 
+# Geração do número primo Q
+q = 0
 while True:
     q = random.randint(100, 1000)
     if eh_primo(q) and q != p:
         break
-        
-n = p*q
 
-#Gerando y
-m = (p-1)*(q-1)
+# Cálculo de N
+n = p * q
+
+# Gerando expoente público Y
+m = (p-1) * (q-1)
 for candidato in range(3, 10):
     if eh_coprimo(candidato, m):
         y = candidato
@@ -51,10 +62,13 @@ for candidato in range(3, 10):
                 y = candidato
                 break
 
-
-print("m: "+ str(m), "\ny:"+ str(y))
+print("m: " + str(m), "\ny:" + str(y))
+print("n:" + str(n))
 #chavePublica = (n,y)
 
+# ---------------------------------------------------------------
+# Blocagem [A]
+# ---------------------------------------------------------------
 blocosASeremCriptografados = []
 i = 0
 while i < len(novamsg):
@@ -67,40 +81,52 @@ while i < len(novamsg):
     else:
         blocosASeremCriptografados.append(novamsg[i])
         i += 1
-print("n:" + str(n))          
+
 print("mensagem: " + novamsg)
 print("em blocos: " + str(blocosASeremCriptografados))
 
-#Criptografar[A]
+# ---------------------------------------------------------------
+# Criptografar [A]
+# ---------------------------------------------------------------
 blocosCriptografados = []
 for bloco in blocosASeremCriptografados:
     blocosCriptografados.append((int(bloco)**y) % n)
 
 print("blocos criptografados: " + str(blocosCriptografados))
-#Blocagem[B]
 
-#Descriptografar[B]
+# ================================================================================================
+# PARTE B - DESCRIPTOGRAFAR MENSAGEM
+# ================================================================================================
 
+# ---------------------------------------------------------------
+# Geração da chave privada [B]
+# ---------------------------------------------------------------
 d = pow(y, -1, m)  #chavePrivada = (n,d)
-print("d: "+ str(d))
+print("d: " + str(d))
+
+# ---------------------------------------------------------------
+# Descriptografar [B]
+# ---------------------------------------------------------------
 blocosDescriptografados = []
 for bloco in blocosCriptografados:
     blocosDescriptografados.append((int(bloco)**d) % n)
+
 print("blocos descriptografados: " + str(blocosDescriptografados))
 
-#Conversão de número para Letra[B]
+# ---------------------------------------------------------------
+# Conversão de número para letra [B]
+# ---------------------------------------------------------------
 msgDescriptografada = ""
 for bloco in blocosDescriptografados:
     msgDescriptografada += str(bloco)
     #msgDescriptografada = chr(msgDescriptografada)
 
 print("mensagem descriptografada: " + msgDescriptografada)
+
+# Conversão final para caracteres
 msgfinal = ""
 for num in range(0, len(msgDescriptografada), 2):
     num = msgDescriptografada[num:num+2]
     msgfinal += chr(int(num))
+
 print("mensagem final: " + msgfinal)
-
-
-
-
